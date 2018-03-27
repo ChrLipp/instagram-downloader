@@ -1,0 +1,88 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+
+	dependencies {
+		classpath "com.github.ben-manes:gradle-versions-plugin:$VERSIONS_PLUGIN"
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:$SPRING_BOOT_VERSION"
+		classpath "io.spring.gradle:dependency-management-plugin:$DEPENDENCY_MANAGEMENT_PLUGIN"
+	}
+}
+
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'org.springframework.boot'
+apply from: 'gradle/javafx.gradle'
+
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:$SPRING_BOOT_VERSION"
+	}
+}
+
+// Variables and constants
+ext {
+	LOG_DIR = "${project.projectDir.path}/logs"
+	ARGS = [
+	]
+
+	// versions taken from Spring BOM
+	GROOVY_VERSION = dependencyManagement.importedProperties['groovy.version']
+}
+
+// Dependencies
+configurations {
+	compile.exclude module: 'commons-logging'
+}
+
+dependencies  {
+	compile "org.codehaus.groovy:groovy-all:$GROOVY_VERSION:indy"
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile 'org.springframework.boot:spring-boot-starter-logging'
+	compile "de.roskenet:springboot-javafx-support:$SPRING_BOOT_JAVAFX_VERSION"
+	compile "io.github.http-builder-ng:http-builder-ng-core:$HTTP_BUILDER_VERSION"
+
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+	testCompile "org.spockframework:spock-spring:$SPOCK_SPRING_VERSION"
+}
+
+// Gradle settings
+wrapper {
+	gradleVersion GRADLE_VERSION
+}
+
+// Java options
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+// Groovy options
+[compileGroovy.groovyOptions, compileTestGroovy.groovyOptions]*.with {
+	optimizationOptions = [ indy: true ]
+}
+
+// Spring boot options
+bootRun {
+	jvmArgs = ["-Dlogpath=${project.LOG_DIR}"]
+	args ARGS
+}
+
+// Dependency updates
+dependencyUpdates.resolutionStrategy = {
+	ComponentSelection { rules ->
+		rules.all { ComponentSelection selection ->
+			boolean rejected = ['alpha', 'beta'].any { qualifier ->
+				selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+			}
+			if (rejected) {
+				selection.reject('Release candidate')
+			}
+		}
+	}
+}

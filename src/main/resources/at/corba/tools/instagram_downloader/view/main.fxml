@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="299.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.corba.tools.instagram_downloader.view.MainController">
+   <children>
+      <VBox layoutX="14.0" layoutY="14.0" prefHeight="214.0" prefWidth="569.0" spacing="1.0">
+         <children>
+            <Label alignment="TOP_LEFT" text="Insert a direct link to a public Instagram photo or video in the form" wrapText="true" />
+            <Label text="https://www.instagram.com/p/&lt;id&gt;" underline="true" />
+            <Label text="or a link to an account in the form" />
+            <Label text="https://www.instagram.com/&lt;account&gt;" underline="true" />
+            <Label />
+            <TextField fx:id="urlField" prefHeight="27.0" prefWidth="569.0" />
+            <Label />
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label text="Directory" />
+                  <TextField fx:id="directoryField" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#selectDirectory" prefHeight="27.0" prefWidth="24.0" text="..." />
+               </children>
+            </HBox>
+            <Label />
+            <HBox prefHeight="20.0" prefWidth="569.0" spacing="10.0">
+               <children>
+                  <Label fx:id="pagesLabel" disable="true" text="Number of Pages (0 for all)" />
+                  <Spinner fx:id="pagesField" disable="true" editable="true" prefHeight="27.0" prefWidth="113.0">
+                        <valueFactory>
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="0" />
+                        </valueFactory>
+                  </Spinner>
+               </children>
+            </HBox>
+            <Label />
+            <Label />
+            <HBox prefHeight="36.0" prefWidth="569.0">
+               <children>
+                  <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
+                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="okButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#download" text="OK" />
+                        <Button cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>
