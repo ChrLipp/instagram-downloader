@@ -1,5 +1,6 @@
 package at.corba.tools.instagram_downloader.service
 
+import at.corba.tools.instagram_downloader.view.IProgressbar
 import groovy.util.logging.Slf4j
 import groovyx.net.http.optional.Download
 import org.springframework.stereotype.Component
@@ -19,41 +20,46 @@ class InstagramDownloadService
 
 	/**
 	 * Downloads <pages> pages media files of an user.
-	 * @param url   The browser URL of the resource
-	 * @param dir   The destination directory
-	 * @param pages How much pages do we load at maximum (one page is 12 media files).
-	 *              0 means all pages available.
+	 * @param url       The browser URL of the resource
+	 * @param dir       The destination directory
+	 * @param pages     How much pages do we load at maximum (one page is 12 media files).
+	 *                  0 means all pages available.
+	 * @param progress  Optional progress bar interface
 	 */
-	void downloadIndexfile(String url, String dir, int pages)
+	void downloadIndexfile(String url, String dir, int pages, IProgressbar progress = null)
 	{
 		def result = []
-		def maxId = null
+		def params = null
 		if (pages == 0) {
 			pages = -1
 		}
 
 		// collect the files
 		while (pages != 0) {
-			def indexJson = browser.get {
-				request.uri = url
-				request.uri.query = maxId ? ['__a': 1, 'max_id': maxId] : ['__a': 1]
+			if (params == null) {
+				params = downloadFirstIndexPage(url, result)
+				if (params == null) {
+					break
+				}
 			}
-			def page = indexJson.graphql.user.edge_owner_to_timeline_media.edges.collect {
-				it.node.shortcode
-			}
-			result.addAll(page)
-			maxId = indexJson.graphql.user.edge_owner_to_timeline_media.page_info.end_cursor
-			if (!indexJson.graphql.user.edge_owner_to_timeline_media.page_info.has_next_page) {
-				break
+			else {
+				if (!downloadNextIndexPage(params, result)) {
+					break
+				}
 			}
 
 			--pages
 		}
 
+		// defining values for progress bar
+		def max = result.size() + 1
+		progress?.setProgress(1, max)
+
 		// download the files
 		result.eachWithIndex { item, idx ->
 			log.info "Download item ${idx} of ${result.size()}"
 			downloadFile("/p/$item", dir)
+			progress?.setProgress(idx + 2, max)
 		}
 	}
 
@@ -100,5 +106,51 @@ class InstagramDownloadService
 			request.uri.query = ['__a': 1]
 			request.contentType = JSON[0]
 		}
+	}
+
+	private HashMap<String, String> downloadFirstIndexPage(
+		String url, List<String> result)
+	{
+		def indexJson = browser.get {
+			request.uri = url
+			request.uri.query = ['__a': 1]
+		}
+		def page = indexJson.graphql.user.edge_owner_to_timeline_media.edges.collect {
+			it.node.shortcode
+		}
+		result.addAll(page)
+
+		if (!indexJson.graphql.user.edge_owner_to_timeline_media.page_info.has_next_page) {
+			return null
+		}
+
+		def params = [:]
+		params['query_id'] = '17888483320059182'
+		params['id'] = indexJson.graphql.user.id
+		params['first'] = '12'
+		params['after'] = indexJson.graphql
+			.user.edge_owner_to_timeline_media.page_info.end_cursor
+
+		params
+	}
+
+	private boolean downloadNextIndexPage(HashMap<String, String> params, List<String> result)
+	{
+		def indexJson = browser.get {
+			request.uri = '/graphql/query'
+			request.uri.query = params
+		}
+		def page = indexJson.data.user.edge_owner_to_timeline_media.edges.collect {
+			it.node.shortcode
+		}
+		result.addAll(page)
+
+		if (!indexJson.data.user.edge_owner_to_timeline_media.page_info.has_next_page) {
+			return false
+		}
+
+		params['after'] = indexJson.data
+			.user.edge_owner_to_timeline_media.page_info.end_cursor
+		true
 	}
 }
