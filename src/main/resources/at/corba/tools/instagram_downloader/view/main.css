@@ -1,0 +1,54 @@
+* {
+    -fx-primary : #424242;
+    -fx-secondary : #444;
+    -fx-primarytext : #F5F5F5;
+    -fx-primarybutton : #29B6F6;
+}
+
+.root{
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-primarytext;
+}
+
+.label {
+    -fx-text-fill: -fx-primarytext;
+}
+
+.label-link {
+    -fx-text-fill: -fx-primarybutton;
+}
+
+.button{
+    -fx-text-fill: -fx-primarytext;
+    -fx-background-color: -fx-primarybutton;
+    -fx-border-color: -fx-primarybutton;
+    -fx-font-size: 13pt;
+}
+
+.button:hover{
+    -fx-border-color: derive(-fx-primarybutton, 20%);
+    -fx-background-color: derive(-fx-primarybutton, 20%);
+}
+
+.text-field
+{
+    -fx-text-fill: -fx-primarytext;
+    -fx-font-size: 13pt;
+    -jfx-focus-color: -fx-primarytext;
+    -fx-prompt-text-fill: derive(-fx-primarytext, -40%);
+}
+
+.input-line{
+    -fx-border-color: derive(-fx-primarytext, -40%);
+}
+
+.jfx-slider .thumb{
+    -fx-background-color: -fx-primarybutton;
+}
+.progress-bar .track{
+    -fx-background-color: derive(-fx-primarytext, -40%);;
+}
+
+.progress-bar .bar {
+    -fx-background-color: -fx-primarybutton;
+}

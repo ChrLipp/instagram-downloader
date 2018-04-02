@@ -1,5 +1,7 @@
 package at.corba.tools.instagram_downloader.view
 
+import java.util.regex.Pattern
+
 import at.corba.tools.instagram_downloader.service.InstagramDownloadService
 import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXProgressBar
@@ -17,7 +19,9 @@ import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Alert
 import javafx.scene.control.Label
+import javafx.scene.control.TextFormatter
 import javafx.stage.DirectoryChooser
+import javafx.util.converter.IntegerStringConverter
 import javafx.util.converter.NumberStringConverter
 import org.springframework.beans.factory.annotation.Autowired
 /**
@@ -68,6 +72,12 @@ class MainController implements Initializable
 			pagesField.textProperty(),
 			pagesSlider.valueProperty(),
 			new NumberStringConverter())
+
+		TextFormatter<Integer> formatter = new TextFormatter<>(
+			new IntegerStringConverter(),
+			1,
+			{ c -> Pattern.matches("\\d*", c.getText()) ? c : null } )
+		pagesField.textFormatter = formatter
 	}
 
 	/**
@@ -157,6 +167,7 @@ class MainController implements Initializable
 
 		boolean isMedia = url.startsWith('HTTPS://WWW.INSTAGRAM.COM/P/')
 		pagesLabel.disable = isMedia
+		pagesField.disable = isMedia
 		pagesSlider.disable = isMedia
 	}
 
@@ -195,11 +206,14 @@ class MainController implements Initializable
 	private void linkMedia(final Event event)
 	{
 		urlField.text = 'https://www.instagram.com/p/'
+		urlField.positionCaret(urlField.text.length())
+
 	}
 
 	@FXML
 	private void linkUser(final Event event)
 	{
 		urlField.text = 'https://www.instagram.com/'
+		urlField.positionCaret(urlField.text.length())
 	}
 }

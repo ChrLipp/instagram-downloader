@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.corba.tools.instagram_downloader.view.MainController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="600.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.corba.tools.instagram_downloader.view.MainController">
    <children>
       <VBox layoutX="14.0" layoutY="14.0" prefHeight="214.0" prefWidth="569.0" spacing="1.0">
          <children>
             <Label alignment="TOP_LEFT" text="Insert a direct link to a public Instagram photo or video in the form" wrapText="true" />
-            <Label onMouseClicked="#linkMedia" text="https://www.instagram.com/p/&lt;id&gt;" textFill="#3b5998" underline="true" />
+            <Label onMouseClicked="#linkMedia" styleClass="label-link" text="https://www.instagram.com/p/&lt;id&gt;" underline="true" />
             <Label text="or a link to an account in the form" />
-            <Label onMouseClicked="#linkUser" text="https://www.instagram.com/&lt;account&gt;" textFill="#3b5998" underline="true" />
+            <Label onMouseClicked="#linkUser" styleClass="label-link" text="https://www.instagram.com/&lt;account&gt;" underline="true" />
             <Label />
             <Label />
             <JFXTextField fx:id="urlField" labelFloat="true" promptText="Enter Instagram URL" />
@@ -32,7 +32,7 @@
             <HBox prefHeight="20.0" prefWidth="569.0" spacing="10.0">
                <children>
                   <Label fx:id="pagesLabel" disable="true" text="Number of Pages (0 for all)" />
-                  <JFXTextField fx:id="pagesField" prefHeight="27.0" prefWidth="45.0" />
+                  <JFXTextField fx:id="pagesField" disable="true" prefHeight="27.0" prefWidth="45.0" />
                   <JFXSlider fx:id="pagesSlider" blockIncrement="1.0" disable="true" value="1.0" />
                </children>
             </HBox>
@@ -44,8 +44,8 @@
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="okButton" defaultButton="true" disable="true" onAction="#download" prefWidth="100.0" style="-fx-background-color: #3B5998;" text="OK" textFill="WHITE" />
-                        <JFXButton cancelButton="true" onAction="#cancel" prefWidth="100.0" style="-fx-background-color: #3B5998;" text="Cancel" textFill="WHITE" />
+                        <JFXButton fx:id="okButton" defaultButton="true" disable="true" onAction="#download" prefWidth="100.0" text="OK" />
+                        <JFXButton cancelButton="true" onAction="#cancel" prefWidth="100.0" text="Cancel" />
                      </children>
                   </HBox>
                </children>
