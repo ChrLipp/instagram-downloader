@@ -29,7 +29,7 @@
                </children>
             </HBox>
             <Label />
-            <HBox prefHeight="20.0" prefWidth="569.0" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="569.0" spacing="10.0">
                <children>
                   <Label fx:id="pagesLabel" disable="true" text="Number of Pages (0 for all)" />
                   <JFXTextField fx:id="pagesField" disable="true" prefHeight="27.0" prefWidth="45.0" />

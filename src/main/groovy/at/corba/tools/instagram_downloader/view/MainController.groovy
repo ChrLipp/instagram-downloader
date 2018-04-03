@@ -62,12 +62,14 @@ class MainController implements Initializable
 	@Override
 	void initialize(URL location, ResourceBundle resources)
 	{
+		// enable ok button and fields only when necessary data is entered
 		ChangeListener cl = { observable, oldValue, newValue ->
 			enableControls()
 		}
 		urlField.textProperty().addListener(cl)
 		directoryField.textProperty().addListener(cl)
 
+		// alllow page entry with slider and field (numeric input only)
 		Bindings.bindBidirectional(
 			pagesField.textProperty(),
 			pagesSlider.valueProperty(),
@@ -78,6 +80,11 @@ class MainController implements Initializable
 			1,
 			{ c -> Pattern.matches("\\d*", c.getText()) ? c : null } )
 		pagesField.textFormatter = formatter
+
+		// white label only when cursor is in pagesField
+		pagesField.focusedProperty().addListener({ arg0, oldValue, newValue ->
+			pagesLabel.disable = !newValue
+		} as ChangeListener<Boolean>)
 	}
 
 	/**
@@ -166,7 +173,7 @@ class MainController implements Initializable
 		okButton.disable = isInValidInput
 
 		boolean isMedia = url.startsWith('HTTPS://WWW.INSTAGRAM.COM/P/')
-		pagesLabel.disable = isMedia
+//		pagesLabel.disable = isMedia
 		pagesField.disable = isMedia
 		pagesSlider.disable = isMedia
 	}
