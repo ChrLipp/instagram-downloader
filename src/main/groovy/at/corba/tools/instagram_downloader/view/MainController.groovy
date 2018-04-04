@@ -1,5 +1,6 @@
 package at.corba.tools.instagram_downloader.view
 
+import java.text.NumberFormat
 import java.util.regex.Pattern
 
 import at.corba.tools.instagram_downloader.service.InstagramDownloadService
@@ -70,12 +71,13 @@ class MainController implements Initializable
 		urlField.textProperty().addListener(cl)
 		directoryField.textProperty().addListener(cl)
 
-		// allow page entry with slider and field (numeric input only)
+		// allow page entry with slider and field
 		Bindings.bindBidirectional(
 			pagesField.textProperty(),
 			pagesSlider.valueProperty(),
-			new NumberStringConverter())
+			new NumberStringConverter(NumberFormat.integerInstance))
 
+		// allow numeric input for pagesField only
 		TextFormatter<Integer> formatter = new TextFormatter<>(
 			new IntegerStringConverter(),
 			1,
