@@ -18,6 +18,7 @@ import javafx.concurrent.Task
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.scene.Cursor
 import javafx.scene.control.Alert
 import javafx.scene.control.Label
 import javafx.scene.control.TextFormatter
@@ -97,6 +98,7 @@ class MainController implements Initializable
 	@FXML
 	private void download(final Event event)
 	{
+		okButton.scene.setCursor(Cursor.WAIT)
 		okButton.disable = true
 
 		def task = new Task<Void>() {
@@ -109,6 +111,7 @@ class MainController implements Initializable
 			def throwable = task.getException()
 			log.error 'Exception while downloading', throwable
 			okButton.disable = false
+			okButton.scene.setCursor(Cursor.DEFAULT)
 			displayException(throwable)
 		})
 
@@ -136,6 +139,7 @@ class MainController implements Initializable
 				pagesSlider.value.toInteger(), progress)
 		}
 		Platform.runLater {
+			okButton.scene.setCursor(Cursor.DEFAULT)
 			progressBar.setProgress(1.0)
 			event.source.scene.window.hide()
 		}
@@ -204,10 +208,7 @@ class MainController implements Initializable
 	 */
 	private String setHeaderText(Exception e)
 	{
-		if (e instanceof RuntimeException) {
-			return setHeaderText(e.cause)
-		}
-		else if (e instanceof HttpException) {
+		if (e instanceof HttpException) {
 			if (e.statusCode == 404) {
 				return 'URL not found or resource is private.'
 			}
@@ -220,6 +221,14 @@ class MainController implements Initializable
 		}
 		else if (e instanceof ConnectException) {
 			return 'Timeout occurred. Please try again with a better connection.'
+		}
+		else if (e instanceof RuntimeException) {
+			if (e.cause != null) {
+				return setHeaderText(e.cause)
+			}
+			else {
+				return e.message
+			}
 		}
 		else {
 			return e.class.canonicalName
