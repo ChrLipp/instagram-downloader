@@ -2,7 +2,9 @@
     -fx-primary : #424242;
     -fx-primarybutton : #29B6F6;
     -fx-primarytext : #F5F5F5;
+
     -fx-secondary : derive(-fx-primarytext, -40%);
+    -fx-secondarybutton : derive(-fx-primarybutton, 20%);
 }
 
 .root {
@@ -16,27 +18,29 @@
 .label-link {
     -fx-text-fill: -fx-primarybutton;
 }
+.label-prompt {
+    -fx-font-size: 11pt;
+}
 
-.button{
+.button {
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primarybutton;
     -fx-border-color: -fx-primarybutton;
     -fx-font-size: 13pt;
 }
-.button:hover{
-    -fx-border-color: derive(-fx-primarybutton, 20%);
-    -fx-background-color: derive(-fx-primarybutton, 20%);
+.button:hover {
+    -fx-border-color: -fx-secondarybutton;
+    -fx-background-color: -fx-secondarybutton;
 }
 
-.text-field
-{
+.text-field {
     -fx-text-fill: -fx-primarytext;
     -fx-font-size: 13pt;
     -jfx-focus-color: -fx-primarytext;
     -fx-prompt-text-fill: -fx-secondary;
 }
 
-.input-line{
+.text-field .input-line {
     -fx-border-color: -fx-secondary;
 }
 
@@ -58,4 +62,15 @@
 }
 .progress-bar .bar {
     -fx-background-color: -fx-primarybutton;
+}
+
+.download-icon {
+    -fx-fill: -fx-primarytext;
+    -glyph-name: "DOWNLOAD";
+    -glyph-size: 18px;
+}
+.cancel-icon {
+    -fx-fill: -fx-primarytext;
+    -glyph-name: "CLOSE_CIRCLE_OUTLINE";
+    -glyph-size: 18px;
 }

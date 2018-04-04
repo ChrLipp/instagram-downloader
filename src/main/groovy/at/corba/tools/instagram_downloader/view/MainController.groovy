@@ -24,6 +24,7 @@ import javafx.stage.DirectoryChooser
 import javafx.util.converter.IntegerStringConverter
 import javafx.util.converter.NumberStringConverter
 import org.springframework.beans.factory.annotation.Autowired
+
 /**
  * Dialog controller.
  */
@@ -69,7 +70,7 @@ class MainController implements Initializable
 		urlField.textProperty().addListener(cl)
 		directoryField.textProperty().addListener(cl)
 
-		// alllow page entry with slider and field (numeric input only)
+		// allow page entry with slider and field (numeric input only)
 		Bindings.bindBidirectional(
 			pagesField.textProperty(),
 			pagesSlider.valueProperty(),
@@ -94,6 +95,8 @@ class MainController implements Initializable
 	@FXML
 	private void download(final Event event)
 	{
+		okButton.disable = true
+
 		def task = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -103,6 +106,7 @@ class MainController implements Initializable
 		task.setOnFailed({
 			def throwable = task.getException()
 			log.error 'Exception while downloading', throwable
+			okButton.disable = false
 			displayException(throwable)
 		})
 
@@ -191,9 +195,17 @@ class MainController implements Initializable
 		alert.showAndWait()
 	}
 
+	/**
+	 * Transforms an exception to an alert header text.
+	 * @param e The exception
+	 * @return  The header text
+	 */
 	private String setHeaderText(Exception e)
 	{
-		if (e instanceof HttpException) {
+		if (e instanceof RuntimeException) {
+			return setHeaderText(e.cause)
+		}
+		else if (e instanceof HttpException) {
 			if (e.statusCode == 404) {
 				return 'URL not found or resource is private.'
 			}
@@ -204,11 +216,18 @@ class MainController implements Initializable
 				return "Status code ${e.statusCode}"
 			}
 		}
+		else if (e instanceof ConnectException) {
+			return 'Timeout occurred. Please try again with a better connection.'
+		}
 		else {
 			return e.class.canonicalName
 		}
 	}
 
+	/**
+	 * Copies the link text to the url field.
+	 * @param event
+	 */
 	@FXML
 	private void linkMedia(final Event event)
 	{
@@ -217,6 +236,10 @@ class MainController implements Initializable
 
 	}
 
+	/**
+	 * Copies the link text to the url field.
+	 * @param event
+	 */
 	@FXML
 	private void linkUser(final Event event)
 	{

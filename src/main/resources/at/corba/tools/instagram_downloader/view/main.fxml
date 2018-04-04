@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="600.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.corba.tools.instagram_downloader.view.MainController">
    <children>
@@ -22,30 +23,38 @@
             <Label />
             <JFXTextField fx:id="urlField" labelFloat="true" promptText="Enter Instagram URL" />
             <Label />
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox prefHeight="100.0" spacing="10.0">
                <children>
                   <JFXTextField fx:id="directoryField" labelFloat="true" promptText="Enter destination directory" HBox.hgrow="ALWAYS" />
                   <JFXButton onAction="#selectDirectory" text="..." />
                </children>
             </HBox>
             <Label />
-            <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="569.0" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
-                  <Label fx:id="pagesLabel" disable="true" text="Number of Pages (0 for all)" />
+                  <Label fx:id="pagesLabel" disable="true" styleClass="label-prompt" text="Number of Pages (0 for all)" />
                   <JFXTextField fx:id="pagesField" disable="true" prefHeight="27.0" prefWidth="45.0" />
                   <JFXSlider fx:id="pagesSlider" blockIncrement="1.0" disable="true" max="20.0" value="1.0" />
                </children>
             </HBox>
             <Label />
             <Label />
-            <HBox prefHeight="36.0" prefWidth="569.0">
+            <HBox prefHeight="36.0">
                <children>
                   <JFXProgressBar fx:id="progressBar" progress="0.0" />
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <Region HBox.hgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="okButton" defaultButton="true" disable="true" onAction="#download" prefWidth="100.0" text="OK" />
-                        <JFXButton cancelButton="true" onAction="#cancel" prefWidth="100.0" text="Cancel" />
+                        <JFXButton fx:id="okButton" defaultButton="true" disable="true" onAction="#download" prefWidth="120.0" text="OK">
+                           <graphic>
+                              <MaterialDesignIconView styleClass="download-icon" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton cancelButton="true" onAction="#cancel" prefWidth="120.0" text="Cancel">
+                           <graphic>
+                              <MaterialDesignIconView styleClass="cancel-icon" />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </HBox>
                </children>

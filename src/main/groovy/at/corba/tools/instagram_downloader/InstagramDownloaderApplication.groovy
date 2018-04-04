@@ -15,6 +15,7 @@ class InstagramDownloaderApplication  extends AbstractJavaFxApplicationSupport
 	void beforeInitialView(Stage stage, ConfigurableApplicationContext ctx)
 	{
 		stage.initStyle(StageStyle.TRANSPARENT)
+		stage.setTitle('Instagram Donwloader')
 	}
 
 	static void main(String[] args)
