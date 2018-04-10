@@ -7,6 +7,7 @@ buildscript {
 		classpath "com.github.ben-manes:gradle-versions-plugin:$VERSIONS_PLUGIN"
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:$SPRING_BOOT_VERSION"
 		classpath "io.spring.gradle:dependency-management-plugin:$DEPENDENCY_MANAGEMENT_PLUGIN"
+		classpath "de.dynamicfiles.projects.gradle.plugins:javafx-gradle-plugin:$JAVAFX_PLUGIN"
 	}
 }
 
@@ -15,7 +16,7 @@ apply plugin: 'groovy'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'org.springframework.boot'
-apply from: 'gradle/javafx.gradle'
+apply plugin: 'javafx-gradle-plugin'
 
 repositories {
     jcenter()
@@ -75,9 +76,22 @@ bootRun {
 	args ARGS
 }
 
-// Dependency updates
+jar {
+	// Spring Boot uses bootJar and disables jar task,
+	// jfxJar depends on jar and doesn't work with bootJar,
+	// so we have to enable it
+	enabled = true
+}
+jfx {
+	mainClass = 'at.corba.tools.instagram_downloader.InstagramDownloaderApplication'
+	vendor = 'Christian LIPP'
+	jfxMainAppJarName = "instagram-downloader.jar"
+	appName = rootProject.name
+}
+
+// Filter unwanted versions for the dependency updates plugin
 dependencyUpdates.resolutionStrategy = {
-	ComponentSelection { rules ->
+	componentSelection { rules ->
 		rules.all { ComponentSelection selection ->
 			boolean rejected = ['alpha', 'beta'].any { qualifier ->
 				selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/

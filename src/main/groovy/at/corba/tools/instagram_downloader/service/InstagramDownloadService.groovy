@@ -109,6 +109,14 @@ class InstagramDownloadService
 		}
 	}
 
+	/**
+	 * Downloads the first index page. This API was originally
+	 * capable of pagination, but Instagram disabled this
+	 * functionality. The it is only useful for the first call.
+	 * @param url       URL of an instagram profil
+	 * @param result    Media urls
+	 * @return Settings for the following calls
+	 */
 	private HashMap<String, String> downloadFirstIndexPage(
 		String url, List<String> result)
 	{
@@ -135,6 +143,12 @@ class InstagramDownloadService
 		params
 	}
 
+	/**
+	 *
+	 * @param params Settings for the following calls
+	 * @param result Media urls
+	 * @return true when there are new pages
+	 */
 	private boolean downloadNextIndexPage(HashMap<String, String> params, List<String> result)
 	{
 		def indexJson = browser.get {

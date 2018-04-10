@@ -120,6 +120,10 @@ class MainController implements Initializable
 		thread.start()
 	}
 
+	/**
+	 * Download task function.
+	 * @param event
+	 */
 	void doDownload(final Event event)
 	{
 		if (urlField.text.toUpperCase().startsWith('HTTPS://WWW.INSTAGRAM.COM/P/'))
