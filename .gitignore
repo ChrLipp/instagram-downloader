@@ -25,5 +25,13 @@ dist/
 nbdist/
 .nb-gradle/
 
+### Mac ###
+.DS_Store
+
 ### Logs ###
 /logs
+
+### Temporary files ###
+/test
+*.py
+

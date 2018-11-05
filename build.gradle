@@ -48,9 +48,11 @@ dependencies  {
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile 'org.springframework.boot:spring-boot-starter-logging'
 	compile "de.roskenet:springboot-javafx-support:$SPRING_BOOT_JAVAFX_VERSION"
-	compile "io.github.http-builder-ng:http-builder-ng-core:$HTTP_BUILDER_VERSION"
+	compile "org.apache.httpcomponents:fluent-hc:$APACHE_VERSION"
+	compile "org.jsoup:jsoup:$JSOUP_VERSION"
 	compile "com.jfoenix:jfoenix:$JFOENIX_VERSION"
 	compile "de.jensd:fontawesomefx-materialdesignfont:$FONTAWESOME_VERSION"
+
 
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile "org.spockframework:spock-spring:$SPOCK_SPRING_VERSION"

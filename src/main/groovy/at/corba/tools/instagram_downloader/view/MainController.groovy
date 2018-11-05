@@ -1,8 +1,5 @@
 package at.corba.tools.instagram_downloader.view
 
-import java.text.NumberFormat
-import java.util.regex.Pattern
-
 import at.corba.tools.instagram_downloader.service.InstagramDownloadService
 import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXProgressBar
@@ -10,7 +7,9 @@ import com.jfoenix.controls.JFXSlider
 import com.jfoenix.controls.JFXTextField
 import de.felixroske.jfxsupport.FXMLController
 import groovy.util.logging.Slf4j
-import groovyx.net.http.HttpException
+import org.apache.http.HttpException
+import org.springframework.beans.factory.annotation.Autowired
+
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.value.ChangeListener
@@ -25,7 +24,8 @@ import javafx.scene.control.TextFormatter
 import javafx.stage.DirectoryChooser
 import javafx.util.converter.IntegerStringConverter
 import javafx.util.converter.NumberStringConverter
-import org.springframework.beans.factory.annotation.Autowired
+import java.text.NumberFormat
+import java.util.regex.Pattern
 
 /**
  * Dialog controller.
@@ -138,7 +138,7 @@ class MainController implements Initializable
 					progressBar.setProgress((double) (current / max))
 				}
 			}
-			downloadService.downloadIndexfile(
+			downloadService.downloadIndexfiles(
 				urlField.text, directoryField.text,
 				pagesSlider.value.toInteger(), progress)
 		}
@@ -200,7 +200,8 @@ class MainController implements Initializable
 	{
 		def alert = new Alert(Alert.AlertType.ERROR)
 		alert.setTitle('An error occurred')
-		alert.setHeaderText(setHeaderText(throwable))
+		def message = setHeaderText(throwable)
+		alert.setHeaderText(message.substring(0, Math.min(80, message.length())))
 		alert.setContentText(throwable.message)
 		alert.showAndWait()
 	}
@@ -212,7 +213,10 @@ class MainController implements Initializable
 	 */
 	private String setHeaderText(Exception e)
 	{
-		if (e instanceof HttpException) {
+		if (e.cause != null) {
+			return setHeaderText(e.cause)
+		}
+		else if (e instanceof HttpException) {
 			if (e.statusCode == 404) {
 				return 'URL not found or resource is private.'
 			}
@@ -227,12 +231,7 @@ class MainController implements Initializable
 			return 'Timeout occurred. Please try again with a better connection.'
 		}
 		else if (e instanceof RuntimeException) {
-			if (e.cause != null) {
-				return setHeaderText(e.cause)
-			}
-			else {
-				return e.message
-			}
+			return e.message
 		}
 		else {
 			return e.class.canonicalName
