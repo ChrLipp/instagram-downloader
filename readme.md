@@ -1,4 +1,4 @@
-# instagram-.downloader
+# instagram-downloader
 
 ## What is it?
 JavaFX based application for downloading media (JPG, MPG) from Instagram with the public API
