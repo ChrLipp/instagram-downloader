@@ -27,7 +27,7 @@ Following a screenshot of the application:
 
 
 ## Credits
-- Icon taken from [IconArchive]()http://www.iconarchive.com/show/papirus-apps-icons-by-papirus-team/instagram-icon.html)
+- Icon taken from [IconArchive](http://www.iconarchive.com/show/papirus-apps-icons-by-papirus-team/instagram-icon.html)
 - [blog entry](https://www.diggernaut.com/blog/how-to-scrape-pages-infinite-scroll-extracting-data-from-instagram/)
 - [Stack overflow question 1](https://stackoverflow.com/questions/49265013/instagram-a-1max-id-end-cursor-isnt-working-for-public-user-feeds).
 - [Stack overflow question 2](https://stackoverflow.com/questions/49786980/how-to-perform-unauthenticated-instagram-web-scraping-in-response-to-recent-priv).
